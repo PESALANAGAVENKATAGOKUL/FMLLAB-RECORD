@@ -1,0 +1,35 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.neighbors import KNeighborsClassifier
+
+# Load dataset
+data = pd.read_csv("data.csv")
+
+# Features (Input)
+X = data[['Hours_Studied', 'Attendance', 'Assignments']]
+
+# Target (Output)
+y = data['Result']
+
+# Split dataset into 80% Training and 20% Testing
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Display Training and Testing Data Size
+print("Training Data Size:", len(X_train))
+print("Testing Data Size:", len(X_test))
+
+# Create KNN Model
+model = KNeighborsClassifier(n_neighbors=3)
+
+# Perform 5-Fold Cross Validation
+scores = cross_val_score(model, X, y, cv=5)
+
+# Display Cross Validation Scores
+print("\nCross Validation Scores:")
+print(scores)
+
+# Display Average Accuracy
+print("\nAverage Accuracy:")
+print(scores.mean())
